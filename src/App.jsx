@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '@react95/core/GlobalStyle';
 import '@react95/core/themes/win95.css';
 
@@ -9,6 +9,37 @@ function App() {
   const [showPopup, setShowPopup] = useState(false);
   const audioRef = useRef(null);
   const terminalInputRef = useRef(null);
+  const terminalContainerRef = useRef(null);
+
+  // Auto-scroll do terminal quando o histórico muda
+  useEffect(() => {
+    if (terminalContainerRef.current) {
+      terminalContainerRef.current.scrollTop = terminalContainerRef.current.scrollHeight;
+    }
+  }, [terminalHistory]);
+
+  // Captura global de teclado - sempre foca no input do terminal
+  useEffect(() => {
+    const handleGlobalKeyDown = (e) => {
+      // Se não estiver com popup aberto e não for uma tecla de controle
+      if (!showPopup && terminalInputRef.current &&
+          !e.ctrlKey && !e.altKey && !e.metaKey &&
+          e.target.tagName !== 'INPUT') {
+        terminalInputRef.current.focus();
+      }
+    };
+
+    // Foca no input do terminal ao carregar
+    if (terminalInputRef.current) {
+      terminalInputRef.current.focus();
+    }
+
+    document.addEventListener('keydown', handleGlobalKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleGlobalKeyDown);
+    };
+  }, [showPopup]);
 
   const toggleMusic = () => {
     if (isPlaying) {
@@ -168,7 +199,7 @@ function App() {
           </button>
 
           <div style={{ marginTop: '20px' }}>
-            <div style={{
+            <div ref={terminalContainerRef} style={{
               border: '2px solid',
               borderColor: '#808080 #ffffff #ffffff #808080',
               padding: '10px',
