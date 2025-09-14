@@ -26,6 +26,7 @@ function App() {
     }}>
       <audio ref={audioRef} loop>
         <source src="/background-music.mp3" type="audio/mpeg" />
+        <source src="background-music.mp3" type="audio/mpeg" />
       </audio>
 
       <div style={{
@@ -79,6 +80,9 @@ function App() {
                 maxWidth: '100%',
                 height: 'auto',
                 display: 'block'
+              }}
+              onError={(e) => {
+                e.target.src = 'camila.png';
               }}
             />
           </div>
