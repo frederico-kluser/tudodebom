@@ -26,11 +26,26 @@ function App() {
     if (command) {
       setTerminalHistory([...terminalHistory, `C:\\WINDOWS> ${command}`]);
 
-      if (command.toLowerCase() === 'fred') {
+      const lowerCommand = command.toLowerCase();
+
+      if (lowerCommand === 'fred') {
         setShowPopup(true);
         setTerminalHistory(prev => [...prev, 'Executando comando especial...']);
+      } else if (lowerCommand === 'gui' || lowerCommand === 'guilherme') {
+        setShowPopup(true);
+        setTerminalHistory(prev => [...prev, 'Executando comando especial...']);
+      } else if (lowerCommand === 'help') {
+        setTerminalHistory(prev => [...prev,
+          '',
+          'Comandos disponíveis:',
+          '  help      - Mostra esta lista de comandos',
+          '  fred      - Comando especial do Fred',
+          '  gui       - Comando especial do Guilherme',
+          '  guilherme - Comando especial do Guilherme',
+          ''
+        ]);
       } else {
-        setTerminalHistory(prev => [...prev, `'${command}' não é reconhecido como comando interno ou externo.`]);
+        setTerminalHistory(prev => [...prev, `Comando '${command}' não foi encontrado. Digite 'help' para ver os comandos disponíveis.`]);
       }
 
       setTerminalInput('');
@@ -185,7 +200,7 @@ function App() {
                     flex: 1,
                     marginLeft: '5px'
                   }}
-                  placeholder="Digite 'fred' e pressione Enter"
+                  placeholder="Digite 'help' para ver os comandos"
                   autoFocus
                 />
                 <span style={{ animation: 'blink 1s infinite' }}>_</span>
