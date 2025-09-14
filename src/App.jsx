@@ -7,9 +7,20 @@ function App() {
   const [terminalInput, setTerminalInput] = useState('');
   const [terminalHistory, setTerminalHistory] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const audioRef = useRef(null);
   const terminalInputRef = useRef(null);
   const terminalContainerRef = useRef(null);
+
+  // Detecta se é mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   // Auto-scroll do terminal quando o histórico muda
   useEffect(() => {
@@ -205,7 +216,30 @@ function App() {
             {isPlaying ? '⏸️ Pausar Música' : '▶️ Tocar Música'}
           </button>
 
-          <div style={{ marginTop: '20px' }}>
+          {isMobile ? (
+            // Mobile: Apenas botão GUILHERME
+            <button
+              onClick={() => setShowPopup(true)}
+              style={{
+                marginTop: '20px',
+                fontSize: '18px',
+                padding: '15px 30px',
+                fontFamily: 'MS Sans Serif, sans-serif',
+                background: 'linear-gradient(135deg, #ff0084, #ff6b6b)',
+                color: 'white',
+                border: '2px solid',
+                borderColor: '#ffffff #808080 #808080 #ffffff',
+                cursor: 'pointer',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                letterSpacing: '2px'
+              }}
+            >
+              💍 GUILHERME 💍
+            </button>
+          ) : (
+            // Desktop: Terminal completo
+            <div style={{ marginTop: '20px' }}>
             <div ref={terminalContainerRef} className="terminal-container" style={{
               border: '2px solid',
               borderColor: '#808080 #ffffff #ffffff #808080',
@@ -244,69 +278,8 @@ function App() {
                 <span style={{ animation: 'blink 1s infinite' }}>_</span>
               </form>
             </div>
-
-            <div className="shortcut-buttons" style={{
-              display: 'flex',
-              gap: '5px',
-              marginTop: '10px',
-              flexWrap: 'wrap',
-              justifyContent: 'center'
-            }}>
-              <button
-                onClick={() => executeCommand('help')}
-                className="shortcut-btn"
-                style={{
-                  padding: '5px 10px',
-                  fontSize: '12px',
-                  fontFamily: 'MS Sans Serif, sans-serif',
-                  background: '#c0c0c0',
-                  border: '2px solid',
-                  borderColor: '#ffffff #808080 #808080 #ffffff',
-                  cursor: 'pointer'
-                }}
-              >Help</button>
-              <button
-                onClick={() => executeCommand('fred')}
-                className="shortcut-btn"
-                style={{
-                  padding: '5px 10px',
-                  fontSize: '12px',
-                  fontFamily: 'MS Sans Serif, sans-serif',
-                  background: '#c0c0c0',
-                  border: '2px solid',
-                  borderColor: '#ffffff #808080 #808080 #ffffff',
-                  cursor: 'pointer'
-                }}
-              >Fred</button>
-              <button
-                onClick={() => executeCommand('gui')}
-                className="shortcut-btn"
-                style={{
-                  padding: '5px 10px',
-                  fontSize: '12px',
-                  fontFamily: 'MS Sans Serif, sans-serif',
-                  background: '#c0c0c0',
-                  border: '2px solid',
-                  borderColor: '#ffffff #808080 #808080 #ffffff',
-                  cursor: 'pointer'
-                }}
-              >Gui</button>
-              <button
-                onClick={handleTerminalSubmit}
-                className="shortcut-btn enter-btn"
-                style={{
-                  padding: '5px 15px',
-                  fontSize: '12px',
-                  fontFamily: 'MS Sans Serif, sans-serif',
-                  background: '#90ee90',
-                  border: '2px solid',
-                  borderColor: '#ffffff #808080 #808080 #ffffff',
-                  cursor: 'pointer',
-                  fontWeight: 'bold'
-                }}
-              >↵ Enter</button>
-            </div>
           </div>
+          )}
         </div>
       </div>
 
@@ -390,22 +363,6 @@ function App() {
             margin: 1vh auto !important;
           }
 
-          /* Terminal container */
-          .terminal-container {
-            height: 20vh !important;
-            max-height: 20vh !important;
-            font-size: 2.5vw !important;
-          }
-
-          /* Shortcut buttons */
-          .shortcut-buttons {
-            margin-top: 1vh !important;
-          }
-
-          .shortcut-btn {
-            font-size: 3vw !important;
-            padding: 1.5vh 3vw !important;
-          }
 
           /* Modal adjustments */
           #root > div:first-child > div:last-child > div {
@@ -426,10 +383,6 @@ function App() {
 
         /* Landscape mobile */
         @media (max-width: 768px) and (orientation: landscape) {
-          .terminal-container {
-            height: 15vh !important;
-          }
-
           #root > div:first-child > div > div:last-child > div:first-child img {
             max-height: 15vh !important;
           }
@@ -437,17 +390,6 @@ function App() {
           h1 {
             font-size: 4vw !important;
             margin: 0.5vh 0 !important;
-          }
-        }
-
-        /* Very small devices */
-        @media (max-width: 400px) {
-          .terminal-container {
-            font-size: 3vw !important;
-          }
-
-          .shortcut-btn {
-            font-size: 3.5vw !important;
           }
         }
       `}</style>
@@ -490,11 +432,18 @@ function App() {
                 style={{
                   width: '18px',
                   height: '18px',
+                  minWidth: '18px',
+                  minHeight: '18px',
+                  padding: '0',
                   border: '1px solid',
                   borderColor: '#ffffff #808080 #808080 #ffffff',
                   background: '#c0c0c0',
                   fontSize: '10px',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  lineHeight: '1'
                 }}
               >×</button>
             </div>
