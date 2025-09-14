@@ -51,7 +51,7 @@ function App() {
   };
 
   const handleTerminalSubmit = (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     const command = terminalInput.trim();
 
     if (command) {
@@ -81,6 +81,13 @@ function App() {
 
       setTerminalInput('');
     }
+  };
+
+  const executeCommand = (cmd) => {
+    setTerminalInput(cmd);
+    setTimeout(() => {
+      handleTerminalSubmit();
+    }, 100);
   };
 
   return (
@@ -199,7 +206,7 @@ function App() {
           </button>
 
           <div style={{ marginTop: '20px' }}>
-            <div ref={terminalContainerRef} style={{
+            <div ref={terminalContainerRef} className="terminal-container" style={{
               border: '2px solid',
               borderColor: '#808080 #ffffff #ffffff #808080',
               padding: '10px',
@@ -237,6 +244,68 @@ function App() {
                 <span style={{ animation: 'blink 1s infinite' }}>_</span>
               </form>
             </div>
+
+            <div className="shortcut-buttons" style={{
+              display: 'flex',
+              gap: '5px',
+              marginTop: '10px',
+              flexWrap: 'wrap',
+              justifyContent: 'center'
+            }}>
+              <button
+                onClick={() => executeCommand('help')}
+                className="shortcut-btn"
+                style={{
+                  padding: '5px 10px',
+                  fontSize: '12px',
+                  fontFamily: 'MS Sans Serif, sans-serif',
+                  background: '#c0c0c0',
+                  border: '2px solid',
+                  borderColor: '#ffffff #808080 #808080 #ffffff',
+                  cursor: 'pointer'
+                }}
+              >Help</button>
+              <button
+                onClick={() => executeCommand('fred')}
+                className="shortcut-btn"
+                style={{
+                  padding: '5px 10px',
+                  fontSize: '12px',
+                  fontFamily: 'MS Sans Serif, sans-serif',
+                  background: '#c0c0c0',
+                  border: '2px solid',
+                  borderColor: '#ffffff #808080 #808080 #ffffff',
+                  cursor: 'pointer'
+                }}
+              >Fred</button>
+              <button
+                onClick={() => executeCommand('gui')}
+                className="shortcut-btn"
+                style={{
+                  padding: '5px 10px',
+                  fontSize: '12px',
+                  fontFamily: 'MS Sans Serif, sans-serif',
+                  background: '#c0c0c0',
+                  border: '2px solid',
+                  borderColor: '#ffffff #808080 #808080 #ffffff',
+                  cursor: 'pointer'
+                }}
+              >Gui</button>
+              <button
+                onClick={handleTerminalSubmit}
+                className="shortcut-btn enter-btn"
+                style={{
+                  padding: '5px 15px',
+                  fontSize: '12px',
+                  fontFamily: 'MS Sans Serif, sans-serif',
+                  background: '#90ee90',
+                  border: '2px solid',
+                  borderColor: '#ffffff #808080 #808080 #ffffff',
+                  cursor: 'pointer',
+                  fontWeight: 'bold'
+                }}
+              >↵ Enter</button>
+            </div>
           </div>
         </div>
       </div>
@@ -250,6 +319,136 @@ function App() {
           0% { transform: scale(1); }
           50% { transform: scale(1.1); }
           100% { transform: scale(1); }
+        }
+
+        /* Mobile styles - prevent scrolling */
+        @media (max-width: 768px) {
+          body {
+            overflow: hidden !important;
+            height: 100vh !important;
+            width: 100vw !important;
+            margin: 0 !important;
+            padding: 0 !important;
+          }
+
+          #root > div:first-child {
+            height: 100vh !important;
+            width: 100vw !important;
+            padding: 2vw !important;
+            overflow: hidden !important;
+          }
+
+          #root > div:first-child > div {
+            width: 96vw !important;
+            max-width: 96vw !important;
+            height: 96vh !important;
+            max-height: 96vh !important;
+            display: flex !important;
+            flex-direction: column !important;
+          }
+
+          /* Window header */
+          #root > div:first-child > div > div:first-child {
+            flex-shrink: 0 !important;
+            font-size: 3vw !important;
+            padding: 1vh 2vw !important;
+          }
+
+          /* Window content */
+          #root > div:first-child > div > div:last-child {
+            flex: 1 !important;
+            overflow: hidden !important;
+            padding: 2vh 2vw !important;
+            display: flex !important;
+            flex-direction: column !important;
+          }
+
+          /* Image container */
+          #root > div:first-child > div > div:last-child > div:first-child {
+            flex: 0 0 auto !important;
+            max-height: 25vh !important;
+            overflow: hidden !important;
+            margin-bottom: 1vh !important;
+          }
+
+          #root > div:first-child > div > div:last-child > div:first-child img {
+            max-height: 20vh !important;
+            width: auto !important;
+            max-width: 100% !important;
+          }
+
+          /* Title section */
+          h1 {
+            font-size: 6vw !important;
+            margin: 1vh 0 !important;
+          }
+
+          /* Play button */
+          button {
+            font-size: 3vw !important;
+            padding: 1.5vh 4vw !important;
+            margin: 1vh auto !important;
+          }
+
+          /* Terminal container */
+          .terminal-container {
+            height: 20vh !important;
+            max-height: 20vh !important;
+            font-size: 2.5vw !important;
+          }
+
+          /* Shortcut buttons */
+          .shortcut-buttons {
+            margin-top: 1vh !important;
+          }
+
+          .shortcut-btn {
+            font-size: 3vw !important;
+            padding: 1.5vh 3vw !important;
+          }
+
+          /* Modal adjustments */
+          #root > div:first-child > div:last-child > div {
+            width: 90vw !important;
+            max-height: 90vh !important;
+            overflow: hidden !important;
+          }
+
+          #root > div:first-child > div:last-child > div h1 {
+            font-size: 8vw !important;
+          }
+
+          #root > div:first-child > div:last-child > div img {
+            max-width: 40vw !important;
+            max-height: 30vh !important;
+          }
+        }
+
+        /* Landscape mobile */
+        @media (max-width: 768px) and (orientation: landscape) {
+          .terminal-container {
+            height: 15vh !important;
+          }
+
+          #root > div:first-child > div > div:last-child > div:first-child img {
+            max-height: 15vh !important;
+          }
+
+          h1 {
+            font-size: 4vw !important;
+            margin: 0.5vh 0 !important;
+          }
+        }
+
+        /* Very small devices */
+        @media (max-width: 400px) {
+          .terminal-container {
+            font-size: 3vw !important;
+          }
+
+          .shortcut-btn {
+            font-size: 3.5vw !important;
+          }
         }
       `}</style>
 
