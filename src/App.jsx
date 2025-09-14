@@ -313,6 +313,19 @@ function App() {
               }}>
                 PRA CASAR ;)
               </h1>
+              <div style={{ margin: '20px 0' }}>
+                <img
+                  src="/dancing.webp"
+                  alt="Dancing"
+                  style={{
+                    maxWidth: '200px',
+                    height: 'auto',
+                    borderRadius: '10px',
+                    border: '3px solid #ff0084',
+                    boxShadow: '0 4px 8px rgba(0,0,0,0.3)'
+                  }}
+                />
+              </div>
               <div style={{ fontSize: '60px', margin: '20px 0' }}>
                 💐💍❤️
               </div>
