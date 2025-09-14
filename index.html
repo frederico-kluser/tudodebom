@@ -115,6 +115,35 @@
             }
         }
 
+        .play-button {
+            margin-top: 30px;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(118, 75, 162, 0.3);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .play-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(118, 75, 162, 0.4);
+        }
+
+        .play-button:active {
+            transform: translateY(0);
+        }
+
+        .play-button.playing {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+
         @media (max-width: 768px) {
             h1 {
                 font-size: 2em;
@@ -127,7 +156,7 @@
     </style>
 </head>
 <body>
-    <audio autoplay loop>
+    <audio id="backgroundMusic" loop>
         <source src="background-music.mp3" type="audio/mpeg">
         Seu navegador não suporta o elemento de áudio.
     </audio>
@@ -138,6 +167,34 @@
         <div class="decorative-line"></div>
         <h1>Tudo de Bom</h1>
         <p class="heart">❤️</p>
+        <button id="playButton" class="play-button" onclick="toggleMusic()">
+            <span id="playIcon">▶️</span>
+            <span id="playText">Tocar Música</span>
+        </button>
     </div>
+
+    <script>
+        let isPlaying = false;
+        const audio = document.getElementById('backgroundMusic');
+        const playButton = document.getElementById('playButton');
+        const playIcon = document.getElementById('playIcon');
+        const playText = document.getElementById('playText');
+
+        function toggleMusic() {
+            if (isPlaying) {
+                audio.pause();
+                playButton.classList.remove('playing');
+                playIcon.textContent = '▶️';
+                playText.textContent = 'Tocar Música';
+                isPlaying = false;
+            } else {
+                audio.play();
+                playButton.classList.add('playing');
+                playIcon.textContent = '⏸️';
+                playText.textContent = 'Pausar Música';
+                isPlaying = true;
+            }
+        }
+    </script>
 </body>
 </html>
