@@ -232,48 +232,72 @@ function App() {
             </div>
           </div>
 
-          <button
-            onClick={toggleMusic}
-            style={{
-              fontSize: "14px",
-              padding: "6px 20px",
-              fontFamily: "MS Sans Serif, sans-serif",
-              background: "#c0c0c0",
-              border: "2px solid",
-              borderColor: "#ffffff #808080 #808080 #ffffff",
-              cursor: "pointer",
-            }}
-            onMouseDown={(e) => {
-              e.target.style.borderColor = "#808080 #ffffff #ffffff #808080";
-            }}
-            onMouseUp={(e) => {
-              e.target.style.borderColor = "#ffffff #808080 #808080 #ffffff";
-            }}
-          >
-            {isPlaying ? "⏸️ Pausar Música" : "▶️ Tocar Música"}
-          </button>
-
-          {isMobile ? (
-            // Mobile: Apenas botão GUILHERME
+          {!isMobile && (
             <button
-              onClick={() => setShowPopup(true)}
+              onClick={toggleMusic}
               style={{
-                marginTop: "20px",
-                fontSize: "18px",
-                padding: "15px 30px",
+                fontSize: "14px",
+                padding: "6px 20px",
                 fontFamily: "MS Sans Serif, sans-serif",
-                background: "linear-gradient(135deg, #ff0084, #ff6b6b)",
-                color: "white",
+                background: "#c0c0c0",
                 border: "2px solid",
                 borderColor: "#ffffff #808080 #808080 #ffffff",
                 cursor: "pointer",
-                fontWeight: "bold",
-                textTransform: "uppercase",
-                letterSpacing: "2px",
+              }}
+              onMouseDown={(e) => {
+                e.target.style.borderColor = "#808080 #ffffff #ffffff #808080";
+              }}
+              onMouseUp={(e) => {
+                e.target.style.borderColor = "#ffffff #808080 #808080 #ffffff";
               }}
             >
-              💍 GUILHERME 💍
+              {isPlaying ? "⏸️ Pausar Música" : "▶️ Tocar Música"}
             </button>
+          )}
+
+          {isMobile ? (
+            // Mobile: Botões de música e GUILHERME
+            <div style={{ marginTop: "20px" }}>
+              <div style={{ display: "flex", gap: "10px", justifyContent: "center" }}>
+                <button
+                  onClick={toggleMusic}
+                  style={{
+                    fontSize: "14px",
+                    padding: "10px 20px",
+                    fontFamily: "MS Sans Serif, sans-serif",
+                    background: "#c0c0c0",
+                    border: "2px solid",
+                    borderColor: "#ffffff #808080 #808080 #ffffff",
+                    cursor: "pointer",
+                  }}
+                  onMouseDown={(e) => {
+                    e.target.style.borderColor = "#808080 #ffffff #ffffff #808080";
+                  }}
+                  onMouseUp={(e) => {
+                    e.target.style.borderColor = "#ffffff #808080 #808080 #ffffff";
+                  }}
+                >
+                  {isPlaying ? "⏸️ Pausar" : "▶️ Tocar Música"}
+                </button>
+                <button
+                  onClick={() => setShowPopup(true)}
+                  style={{
+                    fontSize: "14px",
+                    padding: "10px 20px",
+                    fontFamily: "MS Sans Serif, sans-serif",
+                    background: "linear-gradient(135deg, #ff0084, #ff6b6b)",
+                    color: "white",
+                    border: "2px solid",
+                    borderColor: "#ffffff #808080 #808080 #ffffff",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  💍 GUILHERME 💍
+                </button>
+              </div>
+            </div>
           ) : (
             // Desktop: Terminal completo
             <div style={{ marginTop: "20px" }}>
@@ -524,7 +548,7 @@ function App() {
                 style={{
                   fontFamily: "MS Sans Serif, sans-serif",
                   fontSize: "48px",
-                  margin: "20px 0",
+                  margin: "20px 0 10px 0",
                   color: "#ff0084",
                   textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
                   animation: "pulse 1s infinite",
@@ -532,6 +556,19 @@ function App() {
               >
                 PRA CASAR ;)
               </h1>
+              <p
+                style={{
+                  fontFamily: "MS Sans Serif, sans-serif",
+                  fontSize: "18px",
+                  margin: "0 0 20px 0",
+                  color: "#ff0084",
+                  fontWeight: "bold",
+                  textTransform: "uppercase",
+                  letterSpacing: "1px",
+                }}
+              >
+                SÓ COM O FREDERICO GUILHERME
+              </p>
               <div style={{ margin: "20px 0" }}>
                 <img
                   src="/dancing.webp"
