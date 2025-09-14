@@ -4,7 +4,11 @@ import '@react95/core/themes/win95.css';
 
 function App() {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [terminalInput, setTerminalInput] = useState('');
+  const [terminalHistory, setTerminalHistory] = useState([]);
+  const [showPopup, setShowPopup] = useState(false);
   const audioRef = useRef(null);
+  const terminalInputRef = useRef(null);
 
   const toggleMusic = () => {
     if (isPlaying) {
@@ -13,6 +17,24 @@ function App() {
       audioRef.current.play();
     }
     setIsPlaying(!isPlaying);
+  };
+
+  const handleTerminalSubmit = (e) => {
+    e.preventDefault();
+    const command = terminalInput.trim();
+
+    if (command) {
+      setTerminalHistory([...terminalHistory, `C:\\WINDOWS> ${command}`]);
+
+      if (command.toLowerCase() === 'fred') {
+        setShowPopup(true);
+        setTerminalHistory(prev => [...prev, 'Executando comando especial...']);
+      } else {
+        setTerminalHistory(prev => [...prev, `'${command}' não é reconhecido como comando interno ou externo.`]);
+      }
+
+      setTerminalInput('');
+    }
   };
 
   return (
@@ -138,10 +160,36 @@ function App() {
               background: '#000',
               color: '#0f0',
               fontFamily: 'monospace',
-              textAlign: 'left'
+              textAlign: 'left',
+              height: '150px',
+              overflowY: 'auto',
+              position: 'relative'
             }}>
-              <div>C:\WINDOWS\&gt; echo "Made with love"</div>
-              <div style={{ animation: 'blink 1s infinite' }}>_</div>
+              {terminalHistory.map((line, i) => (
+                <div key={i}>{line}</div>
+              ))}
+              <form onSubmit={handleTerminalSubmit} style={{ display: 'flex', alignItems: 'center' }}>
+                <span>C:\WINDOWS&gt; </span>
+                <input
+                  ref={terminalInputRef}
+                  type="text"
+                  value={terminalInput}
+                  onChange={(e) => setTerminalInput(e.target.value)}
+                  style={{
+                    background: 'transparent',
+                    border: 'none',
+                    color: '#0f0',
+                    fontFamily: 'monospace',
+                    fontSize: 'inherit',
+                    outline: 'none',
+                    flex: 1,
+                    marginLeft: '5px'
+                  }}
+                  placeholder="Digite 'fred' e pressione Enter"
+                  autoFocus
+                />
+                <span style={{ animation: 'blink 1s infinite' }}>_</span>
+              </form>
             </div>
           </div>
         </div>
@@ -152,7 +200,96 @@ function App() {
           0%, 50% { opacity: 1; }
           51%, 100% { opacity: 0; }
         }
+        @keyframes pulse {
+          0% { transform: scale(1); }
+          50% { transform: scale(1.1); }
+          100% { transform: scale(1); }
+        }
       `}</style>
+
+      {showPopup && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: 'rgba(0, 0, 0, 0.7)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 1000
+        }}>
+          <div style={{
+            background: '#c0c0c0',
+            border: '2px solid',
+            borderColor: '#ffffff #808080 #808080 #ffffff',
+            boxShadow: '2px 2px 0 0 #000000',
+            padding: '0',
+            width: '400px',
+            animation: 'pulse 0.5s ease-out'
+          }}>
+            <div style={{
+              background: 'linear-gradient(to right, #ff0084, #ff6b6b)',
+              color: 'white',
+              padding: '5px 8px',
+              display: 'flex',
+              alignItems: 'center',
+              fontFamily: 'MS Sans Serif, sans-serif',
+              fontSize: '13px',
+              fontWeight: 'bold'
+            }}>
+              <span style={{ flex: 1 }}>💍 Proposta Especial 💍</span>
+              <button
+                onClick={() => setShowPopup(false)}
+                style={{
+                  width: '18px',
+                  height: '18px',
+                  border: '1px solid',
+                  borderColor: '#ffffff #808080 #808080 #ffffff',
+                  background: '#c0c0c0',
+                  fontSize: '10px',
+                  cursor: 'pointer'
+                }}
+              >×</button>
+            </div>
+            <div style={{
+              padding: '30px',
+              textAlign: 'center'
+            }}>
+              <h1 style={{
+                fontFamily: 'MS Sans Serif, sans-serif',
+                fontSize: '48px',
+                margin: '20px 0',
+                color: '#ff0084',
+                textShadow: '2px 2px 4px rgba(0,0,0,0.3)',
+                animation: 'pulse 1s infinite'
+              }}>
+                PRA CASAR ;)
+              </h1>
+              <div style={{ fontSize: '60px', margin: '20px 0' }}>
+                💐💍❤️
+              </div>
+              <button
+                onClick={() => setShowPopup(false)}
+                style={{
+                  fontSize: '16px',
+                  padding: '10px 30px',
+                  fontFamily: 'MS Sans Serif, sans-serif',
+                  background: '#ff0084',
+                  color: 'white',
+                  border: '2px solid',
+                  borderColor: '#ffffff #808080 #808080 #ffffff',
+                  cursor: 'pointer',
+                  marginTop: '20px'
+                }}
+              >
+                SIM! 💕
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
